@@ -6,10 +6,9 @@ loadModule("pages");
 // https://github.com/LogiksApps/Logiks-adminCP-OLD/blob/master/app/plugins/modules/changeLog/service.php
 // https://github.com/LogiksApps/Logiks-adminCP-OLD/blob/master/app/plugins/modules/changeLog/index.php
 
-function pageContentArea() {
+function pageContentArea() {//Change Log Since : <span id='dated'>".date("d/m/Y H:i:s")."</span>
     return "<div class='container table-responsive'>
-    <h2>Change Log Since : <span id='dated'>".date("d/m/Y H:i:s")."</span></h2>
-    <hr>
+    <h2 id='changeLogTitle'></h2>
     <ul id='changeLogBody' class='list-group'>
       
     </ul>
@@ -45,7 +44,8 @@ function reloadPage() {
     window.location.reload();
 }
 function getChangeLog() {
-    $("#dated").html($("#changeSince").val());
+    $("#changeLogTitle").html("Change Log Since : <span id='dated'>"+$("#changeSince").val()+"</span>");
+    // $("#dated").html($("#changeSince").val());
     $("#toolbtn_downloadChangeLog").closest("li").addClass("hidden");
     $("#changeLogBody").html("Loading ...");
     $("#changeLogBody").load(_service("changelog","list-log")+"&date1="+encodeURIComponent($("#changeSince").val()), function(data) {

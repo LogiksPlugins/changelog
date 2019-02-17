@@ -3,7 +3,7 @@ if(!defined('ROOT')) exit('No direct script access allowed');
 
 $appPath = ROOT.APPS_FOLDER.CMS_SITENAME."/";
 
-$sFrmt="<li class='list-group-item file'><input type=checkbox rel='%s' /><b style='color:green;margin-right:4px;'>%d</b>%s<a class='downloadlink hidden' href='".SiteLocation."services/?scmd=changelog&mode=downloadfile&file=%s' target=_blank><i style='color:blue;margin-left:10px;'>Download</i></a><div style='float:right'>%s</div></li>";
+$sFrmt="<li class='list-group-item file'><input type=checkbox rel='%s' style='float:left;' /><b style='color:green;margin-right:4px;margin-left: 5px;'>%d</b>%s<a class='downloadlink hidden' href='".SiteLocation."services/?scmd=changelog&mode=downloadfile&file=%s' target=_blank><i style='color:blue;margin-left:10px;'>Download</i></a><div style='float:right'>%s</div></li>";
 $patchFrmt="";
 $logFile=ROOT.TMP_FOLDER."changelog/".date("Y-m-d G:m").".log";
 $patchFile=ROOT.TMP_FOLDER."patches/patch_".date("Y:m:d-H:i").".zip";
