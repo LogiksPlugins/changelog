@@ -6,7 +6,7 @@ $appPath = ROOT.APPS_FOLDER.CMS_SITENAME."/";
 $sFrmt="<li class='list-group-item file'><input type=checkbox rel='%s' style='float:left;' /><b style='color:green;margin-right:4px;margin-left: 5px;'>%d</b>%s<a class='downloadlink hidden' href='".SiteLocation."services/?scmd=changelog&mode=downloadfile&file=%s' target=_blank><i style='color:blue;margin-left:10px;'>Download</i></a><div style='float:right'>%s</div></li>";
 $patchFrmt="";
 $logFile=ROOT.TMP_FOLDER."changelog/".date("Y-m-d G:m").".log";
-$patchFile=ROOT.TMP_FOLDER."patches/patch_".date("Y:m:d-H:i").".zip";
+$patchFile=ROOT.TMP_FOLDER."patches/patch_".date("YmdHis").".zip";
 $excludeDir=[
     "usermedia",
 	"tmp",
@@ -48,7 +48,7 @@ switch ($_REQUEST['action']) {
     break;
     case "download-zip":
         $zipFile=$patchFile;
-		$baseFolder=APPROOT;
+		$baseFolder=CMS_APPROOT;
 		//$zip=null;
 		$zip = new ZipArchive;
 		$res = $zip->open($zipFile, ZipArchive::CREATE);
@@ -116,8 +116,8 @@ switch ($_REQUEST['action']) {
 				$x=explode("_",$a);
 				$dt=$x[1];
 				$dt=substr($dt,0,strlen($dt)-4);
-				$patchFrmt="<li class='file'><b style='color:green;margin-right:4px;'>%d</b>%s<a class=downloadlink href='".SiteLocation."services/?scmd=changelog&mode=downloadpatch&file=%s' target=_blank><i style='color:blue;margin-left:10px;'>Download</i></a><div style='float:right'>%s</div></li>";
-				printf($patchFrmt,$cnt,$a,$a,$dt);
+				$patchFrmt="<li class='list-group-item file'><b style='color:green;margin-right:4px;'>%d</b>%s<a class=downloadlink href='".SiteLocation."services/?scmd=changelog&mode=downloadpatch&file=%s' target=_blank><i style='color:blue;margin-left:10px;'>Download</i></a><div style='float:right'>%s</div></li>";
+				printf($patchFrmt,$cnt,$a,$a,date("Y-m-d H:i:s", strtotime($dt)));
 				$cnt++;
 			}
 		} else {

@@ -22,7 +22,10 @@ printPageComponent(false,[
 		"toolbar"=>[
 			"reloadPage"=>["icon"=>"<i class='fa fa-refresh'></i>"],
 			"getChangeLog"=>["icon"=>"<i class='fa fa-eye'></i>","align"=>"right","title"=>"Fetch"],
-			"downloadChangeLog"=>["icon"=>"<i class='fa fa-download'></i>","class"=>"hidden"],
+			
+			"getPatches"=>["icon"=>"<i class='fa fa-list'></i>","align"=>"left","title"=>"Patches"],
+			
+			"downloadChangeLog"=>["icon"=>"<i class='fa fa-download'></i>","class"=>"hidden","title"=>"Download"],
 		],
 		"sidebar"=>false,
 		"contentArea"=>"pageContentArea"
@@ -32,11 +35,11 @@ printPageComponent(false,[
 <script>
 $(function() {
     $("#pgtoolbar .nav.navbar-right").prepend('<li class="form-group" style="margin-top: 4px;width: 250px;"><div class="input-group" id=datetimepicker2>'+
-            '<input type="text" class="form-control" placeholder="Find Since" id="changeSince" value="<?=date("d/m/Y H:i:s")?>">'+
+            '<input type="text" class="form-control" placeholder="Find Since" id="changeSince" value="<?=date("d/m/Y H:i:00")?>">'+
             '<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span></div></li>');
     
     $("#datetimepicker2").datetimepicker({
-        format: 'DD/MM/YYYY HH:mm:ss'
+        format: 'DD/MM/YYYY HH:mm:00'
     });
     $("#changeLogBody").html("<h3 class='text-center'>No changelog found</h3>");
 });
@@ -47,12 +50,24 @@ function getChangeLog() {
     $("#changeLogTitle").html("Change Log Since : <span id='dated'>"+$("#changeSince").val()+"</span>");
     // $("#dated").html($("#changeSince").val());
     $("#toolbtn_downloadChangeLog").closest("li").addClass("hidden");
+    
     $("#changeLogBody").html("Loading ...");
-    $("#changeLogBody").load(_service("changelog","list-log")+"&date1="+encodeURIComponent($("#changeSince").val()), function(data) {
+    $("#changeLogBody").load(_service("changeLog","list-log")+"&date1="+encodeURIComponent($("#changeSince").val()), function(data) {
         if($("#changeLogBody").children().length>0) {
             $("#toolbtn_downloadChangeLog").closest("li").removeClass("hidden");
         } else {
             $("#changeLogBody").html("<h3 class='text-center'>No changelog found</h3>");
+        }
+    });
+}
+function getPatches() {
+    $("#changeLogTitle").html("Patch History");
+    $("#changeLogBody").html("Loading ...");
+    $("#changeLogBody").load(_service("changeLog","list-patches"), function(data) {
+        if($("#changeLogBody").children().length>0) {
+            // $("#toolbtn_downloadChangeLog").closest("li").removeClass("hidden");
+        } else {
+            $("#changeLogBody").html("<h3 class='text-center'>No patches found</h3>");
         }
     });
 }
@@ -61,7 +76,7 @@ function downloadChangeLog() {
 	$("#changeLogBody input[type=checkbox]:checked").each(function() {
 			a.push("file[]="+$(this).attr("rel"));
 		});
-	lnk=getServiceCMD("changelog","download-zip")+"&"+a.join("&");
+	lnk=getServiceCMD("changeLog","download-zip")+"&"+a.join("&");
 	window.open(lnk);
 }
 </script>
