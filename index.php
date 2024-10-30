@@ -25,7 +25,8 @@ printPageComponent(false,[
 			
 			"getPatches"=>["icon"=>"<i class='fa fa-list'></i>","align"=>"left","title"=>"Patches"],
 			
-			"downloadChangeLog"=>["icon"=>"<i class='fa fa-download'></i>","class"=>"hidden","title"=>"Download"],
+			"checkAll"=>["icon"=>"<i class='fa fa-check-square'></i>","class"=>"on_fetch hidden","title"=>"Check All"],
+			"downloadChangeLog"=>["icon"=>"<i class='fa fa-download'></i>","class"=>"on_fetch hidden","title"=>"Download"],
 		],
 		"sidebar"=>false,
 		"contentArea"=>"pageContentArea"
@@ -49,12 +50,12 @@ function reloadPage() {
 function getChangeLog() {
     $("#changeLogTitle").html("Change Log Since : <span id='dated'>"+$("#changeSince").val()+"</span>");
     // $("#dated").html($("#changeSince").val());
-    $("#toolbtn_downloadChangeLog").closest("li").addClass("hidden");
+    $(".on_fetch").closest("li").addClass("hidden");
     
     $("#changeLogBody").html("Loading ...");
     $("#changeLogBody").load(_service("changeLog","list-log")+"&date1="+encodeURIComponent($("#changeSince").val()), function(data) {
         if($("#changeLogBody").children().length>0) {
-            $("#toolbtn_downloadChangeLog").closest("li").removeClass("hidden");
+            $(".on_fetch").closest("li").removeClass("hidden");
         } else {
             $("#changeLogBody").html("<h3 class='text-center'>No changelog found</h3>");
         }
@@ -78,5 +79,16 @@ function downloadChangeLog() {
 		});
 	lnk=getServiceCMD("changeLog","download-zip")+"&"+a.join("&");
 	window.open(lnk);
+}
+function checkAll() {
+    if($("#changeLogBody input[type=checkbox]:first-child").is(":checked")) {
+        $("#changeLogBody input[type=checkbox]").each(function() {
+            this.checked = false;
+        })
+    } else {
+        $("#changeLogBody input[type=checkbox]").each(function() {
+            this.checked = true;
+        })
+    }
 }
 </script>
